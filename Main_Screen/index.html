@@ -2,18 +2,18 @@
 <html>
   <head>
     <title>Meine Kr&auml;utertreppe</title>
-    <script src="script.js"></script>
+    <script src="index.js"></script>
   </head>
   <body>
     <h1>Meine Kr&auml;utertreppe</h1>
-    <div id="pot1"><table>
-      <tr><td id="main_Pot">Topf 1</td><td></td></tr>
-      <tr><td id="main_Plant">Keine Pflanze</td><td></td></tr>
-      <tr><td >Ist-Feuchte [%]</td><td id="">0</td></tr>
-      <tr><td>Soll-Feuchte [%]</td><td>0</td></tr>
-      <tr><td colspan="2"><h3>Feuchte-Verlauf</h3></td></tr>
-      <tr><td><button id="changePlant" onclick="window.location.href='./changePlant.html'">&Auml;ndern</button></td>
-        <td><button>L&ouml;schen</button></td></tr>
+    <div><table>
+      <tr><td>Topf 1</td><td></td></tr>
+      <tr><td id="plant1">Keine Pflanze</td><td></td></tr>
+      <tr><td>Ist-Feuchte [%]</td><td id="istFeuchte1">0</td></tr>
+      <tr><td>Soll-Feuchte [%]</td><td id="sollFeuchte1">0</td></tr>
+      <tr><td colspan="2"><h3>Feuchte-Verlauf</h3><p id="feuchteHistorie"></p></td></tr>
+      <tr><td><button id="changePot1" onclick="changePlant(this);">&Auml;ndern</button></td>
+        <td><button id="deletePot1" onclick="">L&ouml;schen</button></td></tr>
     </table></div>
   </body>
 </html>
