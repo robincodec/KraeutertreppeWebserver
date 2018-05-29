@@ -2,13 +2,13 @@
 <html>
   <head>
     <title>&Auml;ndere Topf</title>
-    <script src="changePlant.js"></script>
+    <script src="script.js"></script>
   </head>
   <body onload="insertData()">
     <h3 id="changeHeading"></h3>
-    <form>
-      Pflanzenname : <input type="String" size="20">
-      Soll-Feuchte [%] : <input type="number">
+    <form name="changeData" action="./index.html" method="GET" onsubmit="change();">
+      Pflanzenname : <input name="plantName" type="String" size="20">
+      Soll-Feuchte [%] : <input name="moistureToBe" type="number" min="0" max="100">
       <input type="submit" value="&Auml;ndern">
       <button onclick="abort();">Abbrechen</button>
      </form>
