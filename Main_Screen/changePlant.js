@@ -8,5 +8,9 @@ function insertData () {
   //Update Heading
   document.getElementById("changeHeading").innerHTML = "&Auml;ndere Topf " + potNumber;
   //Update Form
-  
+
+}
+
+function abort () {
+  document.location.href = './index.html';
 }
