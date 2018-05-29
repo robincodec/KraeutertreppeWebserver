@@ -4,7 +4,7 @@
     <title>Meine Kr&auml;utertreppe</title>
     <script src="script.js"></script>
   </head>
-  <body>
+  <body onload="loadIndex();">
     <h1>Meine Kr&auml;utertreppe</h1>
 
         <!-- Topf 1 -->
@@ -15,7 +15,7 @@
       <tr><td>Soll-Feuchte [%]</td><td id="sollFeuchte1">0</td></tr>
       <tr><td colspan="2"><h3>Feuchte-Verlauf</h3><p id="feuchteHistorie1"></p></td></tr>
       <tr><td><button id="changePot1" onclick="changePlant(this);">&Auml;ndern</button></td>
-        <td><button id="deletePot1" onclick="deleteFunction();">L&ouml;schen</button></td></tr>
+        <td><button id="deletePot1" onclick="deleteFunction(this);">L&ouml;schen</button></td></tr>
     </table></div>
     <br/><br/>
 
@@ -27,7 +27,7 @@
       <tr><td>Soll-Feuchte [%]</td><td id="sollFeuchte2">0</td></tr>
       <tr><td colspan="2"><h3>Feuchte-Verlauf</h3><p id="feuchteHistorie2"></p></td></tr>
       <tr><td><button id="changePot2" onclick="changePlant(this);">&Auml;ndern</button></td>
-        <td><button id="deletePot2" onclick="deleteFunction();">L&ouml;schen</button></td></tr>
+        <td><button id="deletePot2" onclick="deleteFunction(this);">L&ouml;schen</button></td></tr>
     </table></div>
     <br/><br/>
 
@@ -40,7 +40,7 @@
       <tr><td>Soll-Feuchte [%]</td><td id="sollFeuchte3">0</td></tr>
       <tr><td colspan="2"><h3>Feuchte-Verlauf</h3><p id="feuchteHistorie3"></p></td></tr>
       <tr><td><button id="changePot3" onclick="changePlant(this);">&Auml;ndern</button></td>
-        <td><button id="deletePot3" onclick="alert(Pots[0].PflanzenName);">L&ouml;schen</button></td>
+        <td><button id="deletePot3" onclick="deleteFunction(this);">L&ouml;schen</button></td>
       </tr>
     </table></div>
     <br/><br/>
