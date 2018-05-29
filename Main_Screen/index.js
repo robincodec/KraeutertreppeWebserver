@@ -5,3 +5,14 @@ function changePlant (caller) {
   // open website for changing data changePlant
   document.location.href = './changePlant.html?potNumber=' + potNumber;
 }
+
+function deleteFunction(){
+  var deleteconfirmation=false;
+  if(confirm("Wollen Sie die Pflanze wirklich aus dem System entfernen?")){
+    deleteconfirmation = true;
+  } else {
+    deleteconfirmation = false;
+  }
+  var x = deleteconfirmation.toString();
+  document.getElementById("test").innerHTML = x;
+}
