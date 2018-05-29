@@ -50,6 +50,8 @@ function loadIndex (){
   }
 }
 
+// potNumber describes which pot has called function
+var potNumber;
 // change data for plant watering by user input
 function changePlant (caller) {
   // get pot number from calling button
@@ -59,9 +61,6 @@ function changePlant (caller) {
 }
 
 // Code for changePlant.html website
-// potNumber describes which pot has called function
-var potNumber;
-
 function insertData () {
   //Get the potNumber from the URI parameters
   potNumber = location.search.split("potNumber=")[1];
