@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>webLearn</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+<h1>Meine Kr&auml;utertreppe</h1>
+<h4>Topf 1</h4>
+<p>Unbepflanzt</p>
+<p>Ist-Feuchte[%] 0</p>
+<p>Soll-Fuchte[%] 0</p>
+<h3>Feuchte-Verlauf</h3>
+
+<canvas id="myCanvas_1" onload="drawchart()" width="100" height="100"
+        style="border:1px solid #c3c3c3;"></canvas>
+
+<canvas id="myCanvas1" onload="showBar()" width="100" height="100"
+        style="border:1px solid #c3c3c3;"></canvas>
+
+<canvas id="myCanvas_f1" onload="drawchartfor()" width="100" height="100"
+        style="border:1px solid #c3c3c3;"></canvas>
+<p><button>&Auml;ndern</button>
+    <button>L&ouml;schen</button>
+</p>
+
+<h4>Topf 2</h4>
+<p>Unbepflanzt</p>
+<p>Ist-Feuchte[%] 0</p>
+<p>Soll-Fuchte[%] 0</p>
+<h3>Feuchte-Verlauf</h3>
+
+<canvas id="myCanvas_2" onload="drawchart()" width="100" height="100"
+        style="border:1px solid #c3c3c3;"></canvas>
+
+<canvas id="myCanvas2" onload="showBar()" width="100" height="100"
+        style="border:1px solid #c3c3c3;"></canvas>
+<canvas id="myCanvas_f2" onload="drawchartfor()" width="100" height="100"
+        style="border:1px solid #c3c3c3;"></canvas>
+<p><button>&Auml;ndern</button>
+    <button>L&ouml;schen</button>
+</p>
+
+<h4>Topf 3</h4>
+<p>Unbepflanzt</p>
+<p>Ist-Feuchte[%] 0</p>
+<p>Soll-Fuchte[%] 0</p>
+<h3>Feuchte-Verlauf</h3>
+
+<canvas id="myCanvas_3" onload="drawchart()" width="100" height="100"
+        style="border:1px solid #c3c3c3;"></canvas>
+
+<canvas id="myCanvas3" onload="showBar()" width="100" height="100"
+        style="border:1px solid #c3c3c3;"></canvas>
+
+<canvas id="myCanvas_f3" onload="drawchartfor()" width="100" height="100"
+        style="border:1px solid #c3c3c3;"></canvas>
+<p><button>&Auml;ndern</button>
+    <button>L&ouml;schen</button>
+</p>
+<script>
+
+
+
+    function drawchart() {
+        var time_stamp=[0,10,20,30,40,50,60,70,80,90,100];
+        var feucht_ist=[80,20,0,20,30,60,70,50,40,90,60];
+        var feucht_ist_inverse=[];
+        for(var i=0;i<feucht_ist.length;i++){
+            feucht_ist_inverse[i]=(feucht_ist[i]-100)*(-1);
+        }
+
+
+        var graphic_num=[time_stamp,feucht_ist];
+
+
+        var canvas = document.getElementById("myCanvas_1");//find the canvas element
+        var ctx = canvas.getContext("2d");//create a drawing object
+        //ctx.fillStyle = "#FF0000";//set the fill style of the drawing object color red
+        // ctx.fillRect(0,360,70,40);//draw rectange fillRect(x,y,width,height) on the canvas
+        // ctx.fillRect(80,40,40,400);
+        // ctx.fillRect(160,40,80,40);
+
+
+        for(var i=0;i<time_stamp.length;i++){
+            ctx.moveTo(time_stamp[i],feucht_ist_inverse[i]);//start point of the line
+            ctx.lineTo(time_stamp[i+1],feucht_ist_inverse[i+1]);//end point of the line
+        }
+        ctx.stroke();//actually draw the line
+
+
+        var time_stamp=[0,10,20,30,40,50,60,70,80,90,100];
+        var feucht_ist=[20,8,10,30,60,16,60,50,40,90,60];
+        var feucht_ist_inverse=[];
+        for(var i=0;i<feucht_ist.length;i++){
+            feucht_ist_inverse[i]=(feucht_ist[i]-100)*(-1);
+        }
+
+
+        var graphic_num=[time_stamp,feucht_ist];
+
+
+        var canvas = document.getElementById("myCanvas_2");//find the canvas element
+        var ctx = canvas.getContext("2d");//create a drawing object
+        //ctx.fillStyle = "#FF0000";//set the fill style of the drawing object color red
+        // ctx.fillRect(0,360,70,40);//draw rectange fillRect(x,y,width,height) on the canvas
+        // ctx.fillRect(80,40,40,400);
+        // ctx.fillRect(160,40,80,40);
+
+
+        for(var i=0;i<time_stamp.length;i++){
+            ctx.moveTo(time_stamp[i],feucht_ist_inverse[i]);//start point of the line
+            ctx.lineTo(time_stamp[i+1],feucht_ist_inverse[i+1]);//end point of the line
+        }
+        ctx.stroke();//actually draw the line
+
+        var time_stamp=[0,10,20,30,40,50,60,70,80,90,100];
+        var feucht_ist=[20,40,26,20,10,80,70,90,20,40,60];
+        var feucht_ist_inverse=[];
+        for(var i=0;i<feucht_ist.length;i++){
+            feucht_ist_inverse[i]=(feucht_ist[i]-100)*(-1);
+        }
+
+
+        var graphic_num=[time_stamp,feucht_ist];
+
+
+        var canvas = document.getElementById("myCanvas_3");//find the canvas element
+        var ctx = canvas.getContext("2d");//create a drawing object
+        //ctx.fillStyle = "#FF0000";//set the fill style of the drawing object color red
+        // ctx.fillRect(0,360,70,40);//draw rectange fillRect(x,y,width,height) on the canvas
+        // ctx.fillRect(80,40,40,400);
+        // ctx.fillRect(160,40,80,40);
+
+
+        for(var i=0;i<time_stamp.length;i++){
+            ctx.moveTo(time_stamp[i],feucht_ist_inverse[i]);//start point of the line
+            ctx.lineTo(time_stamp[i+1],feucht_ist_inverse[i+1]);//end point of the line
+        }
+        ctx.stroke();//actually draw the line
+
+    }
+    drawchart();
+
+    function showBar(){
+        var c = document.getElementById("myCanvas1");
+        var ctx = c.getContext("2d");
+        ctx.fillStyle = "#00ff00";
+
+        var values= [66, 77, 68, 20, 75, 85, 70, 80, 50, 65, 59, 75, 10, 69,66];
+        var distance = 10;
+        var maxheight = 100;
+        var barwidth= 100 /values.length - distance;
+
+        for(var i = 0; i < values.length; i++)
+        {
+            ctx.fillRect(barwidth * i + distance * i, maxheight - maxheight * values[i] / 100, barwidth, maxheight * values[i] / 100);
+        }
+
+        var c2 = document.getElementById("myCanvas2");
+        var ctx2 = c2.getContext("2d");
+        ctx2.fillStyle = "#00ff00";
+
+        var Feuchte_IST= [56, 67, 78, 10, 25, 45, 50, 20, 40, 95, 69, 55, 20, 69,86];
+        var distance = 10;
+        var maxheight = 100;
+        var barwidth= 100 /Feuchte_IST.length - distance;
+
+        for(var i = 0; i < Feuchte_IST.length; i++)
+        {
+            ctx2.fillRect(barwidth * i + distance * i, maxheight - maxheight * Feuchte_IST[i] / 100, barwidth, maxheight * Feuchte_IST[i] / 100);
+        }
+
+        var c3 = document.getElementById("myCanvas3");
+        var ctx3 = c3.getContext("2d");
+        ctx3.fillStyle = "#00ff00";
+
+        var Feuchte_IST= [26, 47, 18, 70, 55, 35, 90, 40, 80, 25, 79, 35, 20, 89,56];
+        var distance = 10;
+        var maxheight = 100;
+        var barwidth= 100 /Feuchte_IST.length - distance;
+
+        for(var i = 0; i < Feuchte_IST.length; i++)
+        {
+            ctx3.fillRect(barwidth * i + distance * i, maxheight - maxheight * Feuchte_IST[i] / 100, barwidth, maxheight * Feuchte_IST[i] / 100);
+        }
+
+    }
+    showBar();
+
+    function drawchartfor() {
+        var canvas = document.getElementById("myCanvas_f1");//find the canvas element
+        var ctx = canvas.getContext("2d");//create a drawing object
+        ctx.fillStyle = "#FF0000";
+
+        var time_stamp=[0,10,20,30,40,50,60,70,80,90,100];
+        var feucht_ist=[80,20,0,20,30,60,70,50,40,90,60];
+        var feucht_ist_inverse=[];
+        for(var i=0;i<feucht_ist.length;i++){
+            feucht_ist_inverse[i]=(feucht_ist[i]-100)*(-1);
+        }
+
+        for(var i=0;i<time_stamp.length;i++){
+            ctx.moveTo(time_stamp[i],feucht_ist_inverse[i]);//start point of the line
+            ctx.lineTo(time_stamp[i+1],feucht_ist_inverse[i+1]);//end point of the line
+            ctx.moveTo(time_stamp[i+1],feucht_ist_inverse[i+1]);
+        }
+        ctx.stroke();//actually draw the line
+
+        var canvas = document.getElementById("myCanvas_f2");//find the canvas element
+        var ctx = canvas.getContext("2d");//create a drawing object
+        ctx.fillStyle = "#FF0000";
+
+        var time_stamp=[0,10,20,30,40,50,60,70,80,90,100];
+        var feucht_ist=[80,20,0,20,30,60,70,50,40,90,60];
+        var feucht_ist_inverse=[];
+        for(var i=0;i<feucht_ist.length;i++){
+            feucht_ist_inverse[i]=(feucht_ist[i]-100)*(-1);
+        }
+
+        for(var i=0;i<time_stamp.length;i++){
+            ctx.moveTo(time_stamp[i],feucht_ist_inverse[i]);//start point of the line
+            ctx.lineTo(time_stamp[i+1],feucht_ist_inverse[i+1]);//end point of the line
+            ctx.moveTo(time_stamp[i+1],feucht_ist_inverse[i+1]);
+        }
+        ctx.stroke();//actually draw the line
+        var canvas = document.getElementById("myCanvas_f3");//find the canvas element
+        var ctx = canvas.getContext("2d");//create a drawing object
+        ctx.fillStyle = "#FF0000";
+
+        var time_stamp=[0,10,20,30,40,50,60,70,80,90,100];
+        var feucht_ist=[80,20,0,20,30,60,70,50,40,90,60];
+        var feucht_ist_inverse=[];
+        for(var i=0;i<feucht_ist.length;i++){
+            feucht_ist_inverse[i]=(feucht_ist[i]-100)*(-1);
+        }
+
+        for(var i=0;i<time_stamp.length;i++){
+            ctx.moveTo(time_stamp[i],feucht_ist_inverse[i]);//start point of the line
+            ctx.lineTo(time_stamp[i+1],feucht_ist_inverse[i+1]);//end point of the line
+            ctx.moveTo(time_stamp[i+1],feucht_ist_inverse[i+1]);
+        }
+        ctx.stroke();//actually draw the line
+    }
+    drawchartfor();
+
+
+</script>
+
+</body>
+</html>
