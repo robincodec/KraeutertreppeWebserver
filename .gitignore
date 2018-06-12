@@ -3,4 +3,6 @@ node_modules/
 
 # Files #
 package-lock.json
-Main_Screen/webserver.js
+test_webserver.js
+test_XMLfile.xml
+/Main_Screen/test_index.html

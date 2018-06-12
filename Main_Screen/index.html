@@ -2,18 +2,388 @@
 <html>
   <head>
     <title>Meine Kr&auml;utertreppe</title>
-    <script src="script.js"></script>
+    <script>
+    var Name_1 = "Unbepflanzt";
+    var Nummer_1 = 1;
+    var Feuchte_Ist_1 = 0;
+    var Feuchte_Soll_1 = 0;
+    var F_Historie_1 = 0;
+    var P_Vorhanden_1 = true;
+
+    var Name_2 = "Unbepflanzt";
+    var Nummer_2 = 2;
+    var Feuchte_Ist_2 = 0;
+    var Feuchte_Soll_2 = 0;
+    var F_Historie_2 = 0;
+    var P_Vorhanden_2 = true;
+
+    var Name_3 = "Unbepflanzt";
+    var Nummer_3 = 3;
+    var Feuchte_Ist_3 = 0;
+    var Feuchte_Soll_3 = 0;
+    var F_Historie_3 = 0;
+    var P_Vorhanden_3 = true;
+
+    var WLAN_Name = "test";
+    var WLAN_Passwort = "testPW";
+
+    var Pot1 = {
+      "PflanzenName": "Robin",
+      "Pot_Nummer" : "1",
+      "Ist_Feuchte" : "40",
+      "Soll_Feuchte" : "42",
+      "F_Historie" : "Array?",
+      "Bepflanzt" : "true"
+    }
+
+    var Pot2 = {
+      "PflanzenName": "Julian",
+      "Pot_Nummer" : "2",
+      "Ist_Feuchte" : "15",
+      "Soll_Feuchte" : "20",
+      "F_Historie" : "Array?",
+      "Bepflanzt" : "true"
+    }
+
+    var Pot3 = {
+      "PflanzenName": "Tian",
+      "Pot_Nummer" : "3",
+      "Ist_Feuchte" : "30",
+      "Soll_Feuchte" : "30",
+      "F_Historie" : "Array?",
+      "Bepflanzt" : "true"
+    }
+
+    var Pots = [Pot1, Pot2, Pot3];
+
+    // Functions
+    // Load data from microcontroller
+    function loadIndex (){
+      httpGetAsyncControllerData("http://localhost:3000/test_XMLfile.xml");
+      loadToArray();
+      for (i=1; i<=3; i++) {
+        document.getElementById("plant" + i).innerHTML = Pots[i-1].PflanzenName;
+        document.getElementById("istFeuchte" + i).innerHTML = Pots[i-1].Ist_Feuchte;
+        document.getElementById("sollFeuchte" + i).innerHTML = Pots[i-1].Soll_Feuchte;
+        document.getElementById("feuchteHistorie" + i).innerHTML = Pots[i-1].F_Historie;
+      }
+    }
+
+    // Get data from Mikrocontroller as XML file
+    function httpGetAsyncControllerData(theUrl) {
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.open("GET", theUrl, true); // true for asynchronous
+      xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+          var status = xmlHttp.status;
+          if ((status>= 200 && status <300) || status === 304) {
+            var xmlUplDoc = xmlHttp.responseXML;
+            //var NameNodeList = xmlUplDoc.getElementsByTagName("Name_1");
+            //var Name_1 = NameNodeList[0].childNodes[0].nodeValue;
+            //var NummerNodeList = xmlUplDoc.getElementsByTagName("Nummer_1");
+            //var Nummer_1 = NummerNodeList[0].childNodes[0].nodeValue;
+            // ...
+            // to be done
+            // ...
+            //alert("Pflanze: "+ Name_1 + ", Nummer: "+ Nummer_1);
+          }
+          else {
+            alert("Error: Daten der Kraeutertreppe konnten von " + theUrl + " nicht geladen werden.");
+          }
+        }
+      }
+      xmlHttp.send();
+    }
+
+    function loadToArray () {
+      Pots[0].PflanzenName = Name_1;
+      Pots[0].Pot_Nummer = Nummer_1;
+      Pots[0].Ist_Feuchte = Feuchte_Ist_1;
+      Pots[0].Soll_Feuchte = Feuchte_Soll_1;
+      Pots[0].F_Historie = F_Historie_1;
+      Pots[0].Bepflanzt = P_Vorhanden_1;
+
+      Pots[1].PflanzenName = Name_2;
+      Pots[1].Pot_Nummer = Nummer_2;
+      Pots[1].Ist_Feuchte = Feuchte_Ist_2;
+      Pots[1].Soll_Feuchte = Feuchte_Soll_2;
+      Pots[1].F_Historie = F_Historie_2;
+      Pots[1].Bepflanzt = P_Vorhanden_2;
+
+      Pots[2].PflanzenName = Name_3;
+      Pots[2].Pot_Nummer = Nummer_3;
+      Pots[2].Ist_Feuchte = Feuchte_Ist_3;
+      Pots[2].Soll_Feuchte = Feuchte_Soll_3;
+      Pots[2].F_Historie = F_Historie_3;
+      Pots[2].Bepflanzt = P_Vorhanden_3;
+    }
+
+    function loadToVar () {
+      Name_1 = Pots[0].PflanzenName;
+      Feuchte_Soll_1 = Pots[0].Soll_Feuchte;
+      P_Vorhanden_1 = Pots[0].Bepflanzt;
+
+      Name_2 = Pots[1].PflanzenName;
+      Feuchte_Soll_2 = Pots[1].Soll_Feuchte;
+      P_Vorhanden_2 = Pots[1].Bepflanzt;
+
+      Name_3 = Pots[2].PflanzenName;
+      Feuchte_Soll_3 = Pots[2].Soll_Feuchte;
+      P_Vorhanden_3 = Pots[2].Bepflanzt;
+    }
+
+    function deleteFunction(element){
+      var potID = element.id.split("deletePot")[1];
+      if(confirm("Wollen Sie die Pflanze wirklich aus dem System entfernen?")){
+        Pots[potID-1].PflanzenName = "Keine Pflanze vorhanden";
+        Pots[potID-1].Ist_Feuchte = "0";
+        Pots[potID-1].Soll_Feuchte = "0";
+        Pots[potID-1].Bepflanzt = "false";
+        document.getElementById("plant" + potID).innerHTML = Pots[potID-1].PflanzenName;
+        document.getElementById("istFeuchte" + potID).innerHTML = Pots[potID-1].Ist_Feuchte;
+        document.getElementById("sollFeuchte" + potID).innerHTML = Pots[potID-1].Soll_Feuchte;
+        // update variables in array
+        loadToVar();
+        // !!! Daten zu Lukas Methode
+        location.reload();
+      }
+    }
+
+    // potNumber describes which pot has called function
+    var potNumber;
+    // change data for plant watering by user input
+    function changePlant (caller) {
+      // get pot number from calling button
+      var potNumber = caller.id.substring(caller.id.length -1, caller.id.length);
+      // open website for changing data changePlant
+      document.location.href = './Main_Screen/changePlant.html?potNumber=' + potNumber;
+    }
+
+    // Code for changePlant.html website
+    function insertData () {
+      //Get the potNumber from the URI parameters
+      potNumber = location.search.split("potNumber=")[1];
+
+      //Update data
+      //Update Heading
+      document.getElementById("changeHeading").innerHTML = "&Auml;ndere Topf " + potNumber;
+      //Update Form
+      document.changeData.plantName.value =  Pots[potNumber-1].PflanzenName;
+      document.changeData.moistureToBe.value = Pots[potNumber-1].Soll_Feuchte;
+    }
+
+    // Post data to Mikrocontroller
+    // Data to be sent
+    var data = `<?xml version="1.0" encoding="UTF-8"?>
+                  <Name_1>${Name_1}</Name_1>
+                  <Feuchte_Soll_1>${Feuchte_Soll_1}</Feuchte_Soll_1>
+                  <P_Vorhanden_1>${P_Vorhanden_1}</P_Vorhanden_1>
+                  <Name_2>${Name_2}</Name_2>
+                  <Feuchte_Soll_2>${Feuchte_Soll_2}</Feuchte_Soll_2>
+                  <P_Vorhanden_2>${P_Vorhanden_2}</P_Vorhanden_2>
+                  <Name_3>${Name_3}</Name_3>
+                  <Feuchte_Soll_3>${Feuchte_Soll_3}</Feuchte_Soll_3>
+                  <P_Vorhanden_3>${P_Vorhanden_3}</P_Vorhanden_3>`;
+
+    var parser = new DOMParser();
+    var xmlDoc = parser.parseFromString(data, "text/xml");
+
+    function httpPostAsyncControllerData(theUrl) {
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.open("POST", theUrl, true); // true for asynchronous
+      console.log("State:", xmlHttp.readyState);
+      xmlHttp.onreadystatechange = function() {
+        console.log("State changed - ", "State:", xmlHttp.readyState);
+        if (xmlHttp.readyState === 4) {
+          var status = xmlHttp.status;
+          if ((status>= 200 && status <300) || status === 304) {
+            alert("Send data to " + theUrl);
+          }
+          else {
+            alert("Failed to send data to " + theUrl);
+          }
+        }
+      }
+      xmlHttp.send(xmlDoc);
+    }
+
+    // Form: Change data
+    function change () {
+      // get user input and save to pot array
+      Pots[potNumber-1].PflanzenName = document.changeData.plantName.value;
+      Pots[potNumber-1].Soll_Feuchte = document.changeData.moistureToBe.value;
+      // update variables in array
+      loadToVar();
+      // post data to webserver / microcontroller
+      httpPostAsyncControllerData("http://localhost:3000/controllerdata");
+      // return true to open main website index
+      return true;
+    }
+
+    // Form: Abort change of data
+    function abort () {
+      // open main website index
+      document.location.href = './Main_Screen/index.html';
+    }
+
+    /*
+* chart beginn
+* */
+function drawchart() {
+    var canvas = document.getElementById("feuchte_verlauf_chart_1");//find the canvas element
+    var ctx = canvas.getContext("2d");//create a drawing object
+    ctx.fillStyle = "#FF0000";
+
+    var time_stamp=[0,10,20,30,40,50,60,70,80,90,100];
+    var feucht_ist=[80,20,0,20,30,60,70,50,40,90,60];
+    var feucht_ist_inverse=[];
+    for(var i=0;i<feucht_ist.length;i++){
+        feucht_ist_inverse[i]=(feucht_ist[i]-100)*(-1);
+    }
+
+    for(var i=0;i<time_stamp.length;i++){
+        ctx.moveTo(time_stamp[i],feucht_ist_inverse[i]);//start point of the line
+        ctx.lineTo(time_stamp[i+1],feucht_ist_inverse[i+1]);//end point of the line
+        ctx.moveTo(time_stamp[i+1],feucht_ist_inverse[i+1]);
+    }
+    ctx.stroke();//actually draw the line
+
+    var canvas = document.getElementById("feuchte_verlauf_chart_2");//find the canvas element
+    var ctx = canvas.getContext("2d");//create a drawing object
+    ctx.fillStyle = "#FF0000";
+
+    var time_stamp=[0,10,20,30,40,50,60,70,80,90,100];
+    var feucht_ist=[20,40,26,20,10,80,70,90,20,40,60];
+    var feucht_ist_inverse=[];
+    for(var i=0;i<feucht_ist.length;i++){
+        feucht_ist_inverse[i]=(feucht_ist[i]-100)*(-1);
+    }
+
+    for(var i=0;i<time_stamp.length;i++){
+        ctx.moveTo(time_stamp[i],feucht_ist_inverse[i]);//start point of the line
+        ctx.lineTo(time_stamp[i+1],feucht_ist_inverse[i+1]);//end point of the line
+        ctx.moveTo(time_stamp[i+1],feucht_ist_inverse[i+1]);
+    }
+    ctx.stroke();//actually draw the line
+
+    var canvas = document.getElementById("feuchte_verlauf_chart_3");//find the canvas element
+    var ctx = canvas.getContext("2d");//create a drawing object
+    ctx.fillStyle = "#FF0000";
+
+    var time_stamp=[0,10,20,30,40,50,60,70,80,90,100];
+    var feucht_ist=[20,8,10,30,60,16,60,50,40,90,60];
+    var feucht_ist_inverse=[];
+    for(var i=0;i<feucht_ist.length;i++){
+        feucht_ist_inverse[i]=(feucht_ist[i]-100)*(-1);
+    }
+
+    for(var i=0;i<time_stamp.length;i++){
+        ctx.moveTo(time_stamp[i],feucht_ist_inverse[i]);//start point of the line
+        ctx.lineTo(time_stamp[i+1],feucht_ist_inverse[i+1]);//end point of the line
+        ctx.moveTo(time_stamp[i+1],feucht_ist_inverse[i+1]);
+    }
+    ctx.stroke();//actually draw the line
+
+}
+
+/*
+* chart end
+* */
+
+
+/*
+* chart beginn
+* */
+
+function showBar(){
+    var c = document.getElementById("myCanvas1");
+    var ctx = c.getContext("2d");
+    ctx.fillStyle = "#00ff00";
+
+    var values= [66, 77, 68, 20, 75, 85, 70, 80, 50, 65, 59, 75, 10, 69,66];
+    var distance = 10;
+    var maxheight = 100;
+    var barwidth= 100 /values.length - distance;
+
+    for(var i = 0; i < values.length; i++)
+    {
+        ctx.fillRect(barwidth * i + distance * i, maxheight - maxheight * values[i] / 100, barwidth, maxheight * values[i] / 100);
+    }
+
+    var c = document.getElementById("myCanvas2");
+    var ctx = c.getContext("2d");
+    ctx.fillStyle = "#00ff00";
+
+    var values= [56, 67, 78, 10, 25, 45, 50, 20, 40, 95, 69, 55, 20, 69,86];
+    var distance = 10;
+    var maxheight = 100;
+    var barwidth= 100 /values.length - distance;
+
+    for(var i = 0; i < values.length; i++)
+    {
+        ctx.fillRect(barwidth * i + distance * i, maxheight - maxheight * values[i] / 100, barwidth, maxheight * values[i] / 100);
+    }
+
+    var c = document.getElementById("myCanvas3");
+    var ctx = c.getContext("2d");
+    ctx.fillStyle = "#00ff00";
+
+    var values= [26, 47, 18, 70, 55, 35, 90, 40, 80, 25, 79, 35, 20, 89,56];
+    var distance = 10;
+    var maxheight = 100;
+    var barwidth= 100 /values.length - distance;
+
+    for(var i = 0; i < values.length; i++)
+    {
+        ctx.fillRect(barwidth * i + distance * i, maxheight - maxheight * values[i] / 100, barwidth, maxheight * values[i] / 100);
+    }
+}
+showBar();
+/*
+* chart end
+* */
+
+/*
+* chart beginn
+* */
+/*
+function showBar(){
+    var c = document.getElementById("myCanvas");
+    var ctx = c.getContext("2d");
+    ctx.fillStyle = "#c3c3c3";
+    var values= [66, 77, 68, 20, 75, 85, 70, 80, 50, 65, 59, 75, 10, 69,66];
+    var distance = 10;
+    var maxheight = 80;
+    var barwidth= 100 /values.length - distance;
+    for(var i = 0; i < values.length; i++)
+    {
+        ctx.fillRect(barwidth * i + distance * i, maxheight - maxheight * values[i] / 100, barwidth, maxheight * values[i] / 100);
+    }
+}
+*/
+/*
+* chart end
+* */
+
+    </script>
   </head>
   <body onload="loadIndex();">
     <h1>Meine Kr&auml;utertreppe</h1>
-
-        <!-- Topf 1 -->
+    <!-- Topf 1 -->
     <div><table>
       <tr><td><h3>Topf 1</h3></td><td></td></tr>
       <tr><td id="plant1">Keine Pflanze</td><td></td></tr>
       <tr><td>Ist-Feuchte [%]</td><td id="istFeuchte1">0</td></tr>
       <tr><td>Soll-Feuchte [%]</td><td id="sollFeuchte1">0</td></tr>
       <tr><td colspan="2"><h3>Feuchte-Verlauf</h3><p id="feuchteHistorie1"></p></td></tr>
+      <tr><td colspan="2">
+        <!--chart beginn-->
+        <!-- Feucht_IST -->
+        <canvas id="myCanvas1" width="100" height="100"
+                style="border:1px solid #c3c3c3;"></canvas>
+        <canvas id="feuchte_verlauf_chart_1" width="100" height="100" style="border: 1px solid #c3c3c3"></canvas>
+        <!--chart end-->
+      </td></tr>
       <tr><td><button id="changePot1" onclick="changePlant(this);">&Auml;ndern</button></td>
         <td><button id="deletePot1" onclick="deleteFunction(this);">L&ouml;schen</button></td></tr>
     </table></div>
@@ -26,11 +396,18 @@
       <tr><td>Ist-Feuchte [%]</td><td id="istFeuchte2">1</td></tr>
       <tr><td>Soll-Feuchte [%]</td><td id="sollFeuchte2">0</td></tr>
       <tr><td colspan="2"><h3>Feuchte-Verlauf</h3><p id="feuchteHistorie2"></p></td></tr>
+      <tr><td colspan="2">
+        <!--chart beginn-->
+        <!-- Feucht_IST -->
+        <canvas id="myCanvas2" width="100" height="100"
+                style="border:1px solid #c3c3c3;"></canvas>
+        <canvas id="feuchte_verlauf_chart_2" width="100" height="100" style="border: 1px solid #c3c3c3"></canvas>
+        <!--chart end-->
+      </td></tr>
       <tr><td><button id="changePot2" onclick="changePlant(this);">&Auml;ndern</button></td>
         <td><button id="deletePot2" onclick="deleteFunction(this);">L&ouml;schen</button></td></tr>
     </table></div>
     <br/><br/>
-
 
     <!-- Topf 3 -->
     <div><table>
@@ -39,6 +416,14 @@
       <tr><td>Ist-Feuchte [%]</td><td id="istFeuchte3">2</td></tr>
       <tr><td>Soll-Feuchte [%]</td><td id="sollFeuchte3">0</td></tr>
       <tr><td colspan="2"><h3>Feuchte-Verlauf</h3><p id="feuchteHistorie3"></p></td></tr>
+      <tr><td colspan="2">
+        <!--chart beginn-->
+        <!-- Feucht_IST -->
+        <canvas id="myCanvas3"  width="100" height="100"
+                style="border:1px solid #c3c3c3;"></canvas>
+        <canvas id="feuchte_verlauf_chart_3"  width="100" height="100" style="border: 1px solid #c3c3c3"></canvas>
+        <!--chart end-->
+      </td></tr>
       <tr><td><button id="changePot3" onclick="changePlant(this);">&Auml;ndern</button></td>
         <td><button id="deletePot3" onclick="deleteFunction(this);">L&ouml;schen</button></td>
       </tr>
