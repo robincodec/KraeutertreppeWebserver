@@ -3,27 +3,39 @@
   <head>
     <title>Kr&auml;utertreppe</title>
     <script src="script.js"></script>
+    <link rel="stylesheet" type="text/css" href="C:\Coden\KraeutertreppeWebserver\CSS\main.css" media="screen">
   </head>
+  <body>
+    <h1 id="banner">Kr&auml;utertreppe Netzwerkeinstellungen:</h2>
 
-    <body>
-      <div>
-        <h2 id="banner">Kr&auml;utertreppe Anmeldefenster:</h2>
-      </div>
+    <div class="container">
+      <form class="row">
+        <div class="vl">
+          <span class="vl-innertext">or</span>
+        </div>
 
-      <div>
-        <h5 id="WiFi_Login_banner">Ich m&ouml;chte mein eigenes WLAN benutzen: </h5>
-      </div>
+        <div class="col">
+          <h3 id="WiFi_Login_banner">Ich m&ouml;chte mein eigenes WLAN benutzen: </h3>
+          <label for="aname"><b>WiFi-Name</b></label>
+          <input id="WiFi-Name" type="text" name="WiFi_Name">
+          <br>
+          <label for="password"><b>WiFi-Passwort:</b></label>
+          <input id="Wifi-PW" type="password" name="password">
+          <br>
+          <button onclick="connect()" id="connect">Verbinden</button>
+        </div>
 
-      <form action="" id="WiFi_Data">
-        WiFi-Name:<br>
-        <input id="WiFi-Name" type="text" name="WiFi_Name">
-        <br>
-        WiFi-Passwort:<br>
-        <input id="Wifi-PW" type="password" name="pas">
+        <div class="col">
+          <h3 id="arduino_banner">Ich m&ouml;chte, dass die Kr&auml;utertreppe ein eigenes WLAN er&ouml;ffnet:</h3>
+          <label for="aname"><b>Bitte geben Sie einen WLAN Namen ein:</b></label>
+          <input id="Arduino_Name" type="text" name="aname">
+          <br>
+          <label for="pas"><b>Bitte stellen Sie das WLAN Passwort f&uuml;r die Kr&auml;utertreppe ein:</b></label>
+          <input id="Arduino_PW" type="password" name="pas">
+          <br>
+          <button onclick="ArduinoWebServerLogInData()" id="connect">WLAN Einrichten</button>
+        </div>
       </form>
-      <br/>
-
-      <button onclick="connect()" id="connect">Verbinden</button>
 
       <script>
         var WiFi_Name;
@@ -34,28 +46,6 @@
           WiFi_PW = getElementById("WiFi_PW").value;
         }
 
-      </script>
-
-      <body>
-        <br/>
-        <br/>
-
-        <div>
-          <h5 id="arduino_banner">Ich m&ouml;chte, dass die Kr&auml;utertreppe ein eigenes WLAN er&ouml;ffnet:</h5>
-        </div>
-
-        <form action="" id="Arduino_Data">
-          Bitte stellen Sie einen WLAN Namen ein:<br>
-          <input id="Arduino_Name" type="text" name="WiFi_Name">
-          <br>
-          Bitte stellen Sie das WLAN Passwort f&uuml;r die Kr&auml;utertreppe ein:<br>
-          <input id="Arduino_PW" type="password" name="pas">
-        </form>
-        <br/>
-
-        <button onclick="ArduinoWebServerLogInData()" id="connect">WLAN Einrichten</button>
-
-        <script>
           var Arduino_WiFi_Name;
           var Arduino_WiFi_PW;
 
@@ -66,8 +56,7 @@
             //alert(Arduino_WiFi_PW);
 
           }
-        </script>
+      </script>
 
-    </body>
 
 </html>
