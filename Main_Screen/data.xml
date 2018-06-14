@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data>
     <TankLeer>false</TankLeer>
-    <Name_1 >Unbepflanzt</Name_1>
+    <Name_1>Unbepflanzt</Name_1>
     <Nummer_1>1</Nummer_1>
     <Feuchte_Ist_1>0</Feuchte_Ist_1>
     <Feuchte_Soll_1>0</Feuchte_Soll_1>
@@ -108,7 +108,7 @@
         <value>0</value>
     </F_Historie_1>
     <P_Vorhanden_1>false</P_Vorhanden_1>
-    <Name_2 >Unbepflanzt</Name_2>
+    <Name_2>Unbepflanzt</Name_2>
     <Nummer_2>2</Nummer_2>
     <Feuchte_Ist_2>0</Feuchte_Ist_2>
     <Feuchte_Soll_2>0</Feuchte_Soll_2>
@@ -215,7 +215,7 @@
         <value>0</value>
     </F_Historie_2>
     <P_Vorhanden_2>false</P_Vorhanden_2>
-    <Name_3 >Unbepflanzt</Name_3>
+    <Name_3>Unbepflanzt</Name_3>
     <Nummer_3>3</Nummer_3>
     <Feuchte_Ist_3>0</Feuchte_Ist_3>
     <Feuchte_Soll_3>0</Feuchte_Soll_3>
