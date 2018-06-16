@@ -3,30 +3,32 @@
   <head>
     <title>Meine Kr&auml;utertreppe</title>
     <script>
+    // variables that are read in from microcontroller's XML file data.xml
+    var TankLeer = false;
+
     var Name_1 = "Unbepflanzt";
     var Nummer_1 = 1;
     var Feuchte_Ist_1 = 0;
     var Feuchte_Soll_1 = 0;
-    var F_Historie_1 = 0;
+    var F_Historie_1 = [];
     var P_Vorhanden_1 = true;
 
     var Name_2 = "Unbepflanzt";
     var Nummer_2 = 2;
     var Feuchte_Ist_2 = 0;
     var Feuchte_Soll_2 = 0;
-    var F_Historie_2 = 0;
+    var F_Historie_2 = [];
     var P_Vorhanden_2 = true;
 
     var Name_3 = "Unbepflanzt";
     var Nummer_3 = 3;
     var Feuchte_Ist_3 = 0;
     var Feuchte_Soll_3 = 0;
-    var F_Historie_3 = 0;
+    var F_Historie_3 = [];
     var P_Vorhanden_3 = true;
 
-    var WLAN_Name = "test";
-    var WLAN_Passwort = "testPW";
-
+    // variables that are copied from single values into objects and stored in array
+    // Note: duplication of values is historically grown
     var Pot1 = {
       "PflanzenName": "Robin",
       "Pot_Nummer" : "1",
@@ -56,45 +58,157 @@
 
     var Pots = [Pot1, Pot2, Pot3];
 
-    // Functions
-    // Load data from microcontroller
+    // Load data from microcontroller. Called on-load of Main_Screen/index.html
     function loadIndex (){
-      httpGetAsyncControllerData("http://localhost:3000/test_XMLfile.xml");
+      // get data from microcontroller via http get request from xml file loaded on webserver
+      httpGetAsyncControllerData("http://localhost:3000/data.xml");
+      // if tank is almost empty inform user
+      if (TankLeer == 'true') {
+        alert("Pr" + unescape("%FC") + "fe F"+ unescape("%FC") + "llstand des Tankes der Kr" + unescape("%E4") + "utertreppe.");
+      };
+      // load data from single variables into objects PotX of array Pots
       loadToArray();
+      // write data from array into GUI
       for (i=1; i<=3; i++) {
         document.getElementById("plant" + i).innerHTML = Pots[i-1].PflanzenName;
         document.getElementById("istFeuchte" + i).innerHTML = Pots[i-1].Ist_Feuchte;
         document.getElementById("sollFeuchte" + i).innerHTML = Pots[i-1].Soll_Feuchte;
-        document.getElementById("feuchteHistorie" + i).innerHTML = Pots[i-1].F_Historie;
       }
     }
 
-    // Get data from Mikrocontroller as XML file
+    // Get data from mikrocontroller's XML file data.xml
     function httpGetAsyncControllerData(theUrl) {
       var xmlHttp = new XMLHttpRequest();
-      xmlHttp.open("GET", theUrl, true); // true for asynchronous
+      xmlHttp.open("GET", theUrl, false); // false for synchronous! wait until data is loaded before continuing
       xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) {
           var status = xmlHttp.status;
           if ((status>= 200 && status <300) || status === 304) {
+            // load requested XML file
             var xmlUplDoc = xmlHttp.responseXML;
-            //var NameNodeList = xmlUplDoc.getElementsByTagName("Name_1");
-            //var Name_1 = NameNodeList[0].childNodes[0].nodeValue;
-            //var NummerNodeList = xmlUplDoc.getElementsByTagName("Nummer_1");
-            //var Nummer_1 = NummerNodeList[0].childNodes[0].nodeValue;
-            // ...
-            // to be done
-            // ...
-            //alert("Pflanze: "+ Name_1 + ", Nummer: "+ Nummer_1);
+
+            // load data from xml file to javascript variables
+            // General
+            var TankLeerNodeList = xmlUplDoc.getElementsByTagName("TankLeer");
+            TankLeer = TankLeerNodeList[0].childNodes[0].nodeValue;
+
+            // Pot 1
+            var NameNodeList = xmlUplDoc.getElementsByTagName("Name_1");
+            Name_1 = NameNodeList[0].childNodes[0].nodeValue;
+            var NummerNodeList = xmlUplDoc.getElementsByTagName("Nummer_1");
+            Nummer_1 = NummerNodeList[0].childNodes[0].nodeValue;
+            var FeuchteIstNodeList = xmlUplDoc.getElementsByTagName("Feuchte_Ist_1");
+            Feuchte_Ist_1 = FeuchteIstNodeList[0].childNodes[0].nodeValue;
+            var FeuchteSollNodeList = xmlUplDoc.getElementsByTagName("Feuchte_Soll_1");
+            Feuchte_Soll_1 = FeuchteSollNodeList[0].childNodes[0].nodeValue;
+            // *Start* get array data for F_Historie
+            var FHistorieList = xmlUplDoc.getElementsByTagName("F_Historie_1");
+            var FHistorieValuesList = FHistorieList[0].childNodes;
+            var arr = []
+            for (var key in FHistorieValuesList){
+              arr.push([]);
+              var nodes = FHistorieValuesList[key].childNodes;
+              for (var ele in nodes){
+                if(nodes[ele]){
+                  arr[key].push(nodes[ele].nodeValue);
+                }
+              }
+            }
+            var counter=0; // describes how many values where no Integer to define position in F_Historie where to store data
+            for (var i=0; i<arr.length; i++) {
+              arr[i][0] = parseInt(arr[i][0]);
+              if (!isNaN(arr[i][0])) {
+                F_Historie_1[i - counter] = arr[i][0];
+              }
+              else {
+                counter = counter+1;
+              }
+            }
+            // *End* get array data for F_Historie
+            var PVorhanden1NodeList = xmlUplDoc.getElementsByTagName("P_Vorhanden_1");
+            P_Vorhanden_1 = PVorhanden1NodeList[0].childNodes[0].nodeValue;
+
+            // Pot 2
+            var NameNodeList = xmlUplDoc.getElementsByTagName("Name_2");
+            Name_2 = NameNodeList[0].childNodes[0].nodeValue;
+            var NummerNodeList = xmlUplDoc.getElementsByTagName("Nummer_2");
+            Nummer_2 = NummerNodeList[0].childNodes[0].nodeValue;
+            var FeuchteIstNodeList = xmlUplDoc.getElementsByTagName("Feuchte_Ist_2");
+            Feuchte_Ist_2 = FeuchteIstNodeList[0].childNodes[0].nodeValue;
+            var FeuchteSollNodeList = xmlUplDoc.getElementsByTagName("Feuchte_Soll_2");
+            Feuchte_Soll_2 = FeuchteSollNodeList[0].childNodes[0].nodeValue;
+            // *Start* get array data for F_Historie
+            var FHistorieList = xmlUplDoc.getElementsByTagName("F_Historie_2");
+            var FHistorieValuesList = FHistorieList[0].childNodes;
+            var arr = []
+            for (var key in FHistorieValuesList){
+              arr.push([]);
+              var nodes = FHistorieValuesList[key].childNodes;
+              for (var ele in nodes){
+                if(nodes[ele]){
+                  arr[key].push(nodes[ele].nodeValue);
+                }
+              }
+            }
+            var counter=0; // describes how many values where no Integer to define position in F_Historie where to store data
+            for (var i=0; i<arr.length; i++) {
+              arr[i][0] = parseInt(arr[i][0]);
+              if (!isNaN(arr[i][0])) {
+                F_Historie_2[i - counter] = arr[i][0];
+              }
+              else {
+                counter = counter+1;
+              }
+            }
+            // *End* get array data for F_Historie
+            var PVorhanden1NodeList = xmlUplDoc.getElementsByTagName("P_Vorhanden_2");
+            P_Vorhanden_2 = PVorhanden1NodeList[0].childNodes[0].nodeValue;
+
+            // Pot 3
+            var NameNodeList = xmlUplDoc.getElementsByTagName("Name_3");
+            Name_3 = NameNodeList[0].childNodes[0].nodeValue;
+            var NummerNodeList = xmlUplDoc.getElementsByTagName("Nummer_3");
+            Nummer_3 = NummerNodeList[0].childNodes[0].nodeValue;
+            var FeuchteIstNodeList = xmlUplDoc.getElementsByTagName("Feuchte_Ist_3");
+            Feuchte_Ist_3 = FeuchteIstNodeList[0].childNodes[0].nodeValue;
+            var FeuchteSollNodeList = xmlUplDoc.getElementsByTagName("Feuchte_Soll_3");
+            Feuchte_Soll_3 = FeuchteSollNodeList[0].childNodes[0].nodeValue;
+            // *Start* get array data for F_Historie
+            var FHistorieList = xmlUplDoc.getElementsByTagName("F_Historie_3");
+            var FHistorieValuesList = FHistorieList[0].childNodes;
+            var arr = []
+            for (var key in FHistorieValuesList){
+              arr.push([]);
+              var nodes = FHistorieValuesList[key].childNodes;
+              for (var ele in nodes){
+                if(nodes[ele]){
+                  arr[key].push(nodes[ele].nodeValue);
+                }
+              }
+            }
+            var counter=0; // describes how many values where no Integer to define position in F_Historie where to store data
+            for (var i=0; i<arr.length; i++) {
+              arr[i][0] = parseInt(arr[i][0]);
+              if (!isNaN(arr[i][0])) {
+                F_Historie_3[i - counter] = arr[i][0];
+              }
+              else {
+                counter = counter+1;
+              }
+            }
+            // *End* get array data for F_Historie
+            var PVorhanden1NodeList = xmlUplDoc.getElementsByTagName("P_Vorhanden_3");
+            P_Vorhanden_3 = PVorhanden1NodeList[0].childNodes[0].nodeValue;
           }
           else {
-            alert("Error: Daten der Kraeutertreppe konnten von " + theUrl + " nicht geladen werden.");
+            alert("Error: Daten der Kr" + unescape("%E4") + "utertreppe konnten von " + theUrl + " nicht geladen werden.");
           }
         }
       }
       xmlHttp.send();
     }
 
+    // load data from single variables into objects PotX of array Pots
     function loadToArray () {
       Pots[0].PflanzenName = Name_1;
       Pots[0].Pot_Nummer = Nummer_1;
@@ -118,6 +232,31 @@
       Pots[2].Bepflanzt = P_Vorhanden_3;
     }
 
+    // remove plant (tell microcontroller that no plant is existing in specific pot)
+    function deleteFunction(element){
+      // get information which pot shall be deleted
+      var potID = element.id.split("deletePot")[1];
+      // confirm window
+      if(confirm("Wollen Sie die Pflanze wirklich aus dem System entfernen?")){
+        // update objects PotX of array Pots
+        Pots[potID-1].PflanzenName = "Unbepflanzt";
+        Pots[potID-1].Ist_Feuchte = "0";
+        Pots[potID-1].Soll_Feuchte = "0";
+        Pots[potID-1].Bepflanzt = "false";
+        // update GUI
+        document.getElementById("plant" + potID).innerHTML = Pots[potID-1].PflanzenName;
+        document.getElementById("istFeuchte" + potID).innerHTML = Pots[potID-1].Ist_Feuchte;
+        document.getElementById("sollFeuchte" + potID).innerHTML = Pots[potID-1].Soll_Feuchte;
+        // load data from objects PotX to single variables
+        loadToVar();
+        // send information to microcontroller
+        httpPostAsyncControllerData("http://localhost:3000/update");
+        // reload updated window index.html
+        location.reload();
+      }
+    }
+
+    // load data from objects PotX to single variables
     function loadToVar () {
       Name_1 = Pots[0].PflanzenName;
       Feuchte_Soll_1 = Pots[0].Soll_Feuchte;
@@ -132,58 +271,19 @@
       P_Vorhanden_3 = Pots[2].Bepflanzt;
     }
 
-    function deleteFunction(element){
-      var potID = element.id.split("deletePot")[1];
-      if(confirm("Wollen Sie die Pflanze wirklich aus dem System entfernen?")){
-        Pots[potID-1].PflanzenName = "Keine Pflanze vorhanden";
-        Pots[potID-1].Ist_Feuchte = "0";
-        Pots[potID-1].Soll_Feuchte = "0";
-        Pots[potID-1].Bepflanzt = "false";
-        document.getElementById("plant" + potID).innerHTML = Pots[potID-1].PflanzenName;
-        document.getElementById("istFeuchte" + potID).innerHTML = Pots[potID-1].Ist_Feuchte;
-        document.getElementById("sollFeuchte" + potID).innerHTML = Pots[potID-1].Soll_Feuchte;
-        // update variables in array
-        loadToVar();
-        // !!! Daten zu Lukas Methode
-        location.reload();
-      }
-    }
-
-    // potNumber describes which pot has called function
-    var potNumber;
-    // change data for plant watering by user input
-    function changePlant (caller) {
-      // get pot number from calling button
-      var potNumber = caller.id.substring(caller.id.length -1, caller.id.length);
-      // open website for changing data changePlant
-      document.location.href = './Main_Screen/changePlant.html?potNumber=' + potNumber;
-    }
-
-    // Code for changePlant.html website
-    function insertData () {
-      //Get the potNumber from the URI parameters
-      potNumber = location.search.split("potNumber=")[1];
-
-      //Update data
-      //Update Heading
-      document.getElementById("changeHeading").innerHTML = "&Auml;ndere Topf " + potNumber;
-      //Update Form
-      document.changeData.plantName.value =  Pots[potNumber-1].PflanzenName;
-      document.changeData.moistureToBe.value = Pots[potNumber-1].Soll_Feuchte;
-    }
-
-    // Post data to Mikrocontroller
     // Data to be sent
     var data = `<?xml version="1.0" encoding="UTF-8"?>
-                  <Name_1>${Name_1}</Name_1>
-                  <Feuchte_Soll_1>${Feuchte_Soll_1}</Feuchte_Soll_1>
-                  <P_Vorhanden_1>${P_Vorhanden_1}</P_Vorhanden_1>
-                  <Name_2>${Name_2}</Name_2>
-                  <Feuchte_Soll_2>${Feuchte_Soll_2}</Feuchte_Soll_2>
-                  <P_Vorhanden_2>${P_Vorhanden_2}</P_Vorhanden_2>
-                  <Name_3>${Name_3}</Name_3>
-                  <Feuchte_Soll_3>${Feuchte_Soll_3}</Feuchte_Soll_3>
-                  <P_Vorhanden_3>${P_Vorhanden_3}</P_Vorhanden_3>`;
+                  <data>
+                    <Name_1>${Name_1}</Name_1>
+                    <Feuchte_Soll_1>${Feuchte_Soll_1}</Feuchte_Soll_1>
+                    <P_Vorhanden_1>${P_Vorhanden_1}</P_Vorhanden_1>
+                    <Name_2>${Name_2}</Name_2>
+                    <Feuchte_Soll_2>${Feuchte_Soll_2}</Feuchte_Soll_2>
+                    <P_Vorhanden_2>${P_Vorhanden_2}</P_Vorhanden_2>
+                    <Name_3>${Name_3}</Name_3>
+                    <Feuchte_Soll_3>${Feuchte_Soll_3}</Feuchte_Soll_3>
+                    <P_Vorhanden_3>${P_Vorhanden_3}</P_Vorhanden_3>
+                  </data>`;
 
     var parser = new DOMParser();
     var xmlDoc = parser.parseFromString(data, "text/xml");
@@ -197,7 +297,7 @@
         if (xmlHttp.readyState === 4) {
           var status = xmlHttp.status;
           if ((status>= 200 && status <300) || status === 304) {
-            alert("Send data to " + theUrl);
+            console.log("Send data to " + theUrl);
           }
           else {
             alert("Failed to send data to " + theUrl);
@@ -207,24 +307,17 @@
       xmlHttp.send(xmlDoc);
     }
 
-    // Form: Change data
-    function change () {
-      // get user input and save to pot array
-      Pots[potNumber-1].PflanzenName = document.changeData.plantName.value;
-      Pots[potNumber-1].Soll_Feuchte = document.changeData.moistureToBe.value;
-      // update variables in array
-      loadToVar();
-      // post data to webserver / microcontroller
-      httpPostAsyncControllerData("http://localhost:3000/controllerdata");
-      // return true to open main website index
-      return true;
+
+    // potNumber describes which pot has called function
+    var potNumber;
+    // change data for plant watering by user input
+    function changePlant (caller) {
+      // get pot number from calling button
+      var potNumber = caller.id.substring(caller.id.length -1, caller.id.length);
+      // open website for changing data changePlant
+      document.location.href = `http://localhost:3000/changePlant?potNumber=${potNumber}`;
     }
 
-    // Form: Abort change of data
-    function abort () {
-      // open main website index
-      document.location.href = './Main_Screen/index.html';
-    }
 
     /*
 * chart beginn
@@ -375,7 +468,7 @@ function showBar(){
       <tr><td id="plant1">Keine Pflanze</td><td></td></tr>
       <tr><td>Ist-Feuchte [%]</td><td id="istFeuchte1">0</td></tr>
       <tr><td>Soll-Feuchte [%]</td><td id="sollFeuchte1">0</td></tr>
-      <tr><td colspan="2"><h3>Feuchte-Verlauf</h3><p id="feuchteHistorie1"></p></td></tr>
+      <tr><td colspan="2"><h3>Feuchte-Verlauf</h3></td></tr>
       <tr><td colspan="2">
         <!--chart beginn-->
         <!-- Feucht_IST -->
@@ -395,7 +488,7 @@ function showBar(){
       <tr><td id="plant2">Keine Pflanze</td><td></td></tr>
       <tr><td>Ist-Feuchte [%]</td><td id="istFeuchte2">1</td></tr>
       <tr><td>Soll-Feuchte [%]</td><td id="sollFeuchte2">0</td></tr>
-      <tr><td colspan="2"><h3>Feuchte-Verlauf</h3><p id="feuchteHistorie2"></p></td></tr>
+      <tr><td colspan="2"><h3>Feuchte-Verlauf</h3></td></tr>
       <tr><td colspan="2">
         <!--chart beginn-->
         <!-- Feucht_IST -->
@@ -415,7 +508,7 @@ function showBar(){
       <tr><td id="plant3">Keine Pflanze</td><td></td></tr>
       <tr><td>Ist-Feuchte [%]</td><td id="istFeuchte3">2</td></tr>
       <tr><td>Soll-Feuchte [%]</td><td id="sollFeuchte3">0</td></tr>
-      <tr><td colspan="2"><h3>Feuchte-Verlauf</h3><p id="feuchteHistorie3"></p></td></tr>
+      <tr><td colspan="2"><h3>Feuchte-Verlauf</h3></td></tr>
       <tr><td colspan="2">
         <!--chart beginn-->
         <!-- Feucht_IST -->
@@ -429,5 +522,6 @@ function showBar(){
       </tr>
     </table></div>
     <br/><br/>
+    <button onclick="document.location.href = 'http://localhost:3000/login';">Login-Einstellungen &auml;ndern</button>
   </body>
 </html>

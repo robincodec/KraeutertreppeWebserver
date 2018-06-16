@@ -2,8 +2,94 @@
 <html>
   <head>
     <title>Kr&auml;utertreppe</title>
-    <script src="script.js"></script>
+    <!--
     <link rel="stylesheet" type="text/css" href="C:\Coden\KraeutertreppeWebserver\CSS\main.css" media="screen">
+    -->
+    <script>
+      // storing XML files that will be sent via http post request
+      var xmlDoc;
+
+      // Home-WiFi configuration
+      var WLAN_Name = "";
+      var WLAN_Passwort = "";
+
+      function connectToWiFi() {
+        WLAN_Name = document.getElementById("WiFiName").value;
+        WLAN_Passwort = document.getElementById("WiFiPW").value;
+
+        if (WLAN_Name.length > 0) {
+
+          if (WLAN_Passwort.length > 0) {
+            // Convert data to XML to send it to microcontroller
+            var WLAN_data = `<?xml version="1.0" encoding="UTF-8"?>
+                              <wlan>
+                                  <WLAN_Name>${WLAN_Name}</WLAN_Name>
+                                  <WLAN_Passwort>${WLAN_Passwort}</WLAN_Passwort>
+                              </wlan>`;
+            var parser = new DOMParser();
+            xmlDoc = parser.parseFromString(WLAN_data, "text/xml");
+            httpPostAsyncControllerData("http://localhost:3000/configuration");
+          }
+          else {
+            alert ("Kein WiFi-Passwort eingetragen");
+          }
+        }
+        else {
+          alert("Kein WiFi-Namen eingetragen.");
+        }
+      }
+
+      // Microcontroller's WiFi configuration
+      var Arduino_WLAN_Name = "";
+      var Arduino_WLAN_Passwort = "";
+
+      function ArduinoWebServerLogInData(){
+        Arduino_WLAN_Name = document.getElementById("Arduino_Name").value;
+        Arduino_WLAN_Passwort = document.getElementById("Arduino_PW").value;
+
+        if (Arduino_WLAN_Name.length > 0) {
+
+          if (Arduino_WLAN_Passwort.length > 7) {
+            // Convert data to XML to send it to microcontroller
+            var Controller_data = `<?xml version="1.0" encoding="UTF-8"?>
+                        <microcontroller>
+                            <microcontroller_wlan_name>${Arduino_WLAN_Name}</microcontroller_wlan_name>
+                            <microcontroller_wlan_passwort>${Arduino_WLAN_Passwort}</microcontroller_wlan_passwort>
+                        </microcontroller>`;
+            var parser = new DOMParser();
+            xmlDoc = parser.parseFromString(Controller_data, "text/xml");
+            httpPostAsyncControllerData("http://localhost:3000/configuration");
+          }
+          else {
+            alert ("WLAN-Passwort muss mindestens 8 Zeichen haben.");
+          }
+        }
+        else {
+          alert("Kein WLAN-Namen eingetragen.");
+        }
+      }
+
+
+      function httpPostAsyncControllerData(theUrl) {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("POST", theUrl, true); // true for asynchronous
+        console.log("State:", xmlHttp.readyState);
+        xmlHttp.onreadystatechange = function() {
+          console.log("State changed - ", "State:", xmlHttp.readyState);
+          if (xmlHttp.readyState === 4) {
+            var status = xmlHttp.status;
+            if ((status>= 200 && status <300) || status === 304) {
+              console.log("Send data to " + theUrl);
+            }
+            else {
+              alert("Failed to send data to " + theUrl);
+            }
+          }
+        }
+        // send XML file via http post request
+        xmlHttp.send(xmlDoc);
+      }
+    </script>
   </head>
   <body>
     <h1 id="banner">Kr&auml;utertreppe Netzwerkeinstellungen:</h2>
@@ -16,13 +102,20 @@
 
         <div class="col">
           <h3 id="WiFi_Login_banner">Ich m&ouml;chte mein eigenes WLAN benutzen: </h3>
-          <label for="aname"><b>WiFi-Name</b></label>
-          <input id="WiFi-Name" type="text" name="WiFi_Name">
+          <p>Die Kr&auml;utertreppe wird sich &uuml;ber die im Folgenden eingegeben WiFi-Daten automatisch
+          in Dein Heimnetzwerk einloggen. Sollte dies nicht funktionieren, weil zum Beispiel das WLAN
+          ausgeschaltet ist oder Du keines hast, so wird die Kr&auml;utertreppe ein eigenes WLAN-
+          Netwerk &ouml;ffnen, in das Du dich zur Verwaltung deiner Kr&auml;utertreppe einloggen kannst.
+          Verwende hierzu die WLAN-Konfiguration unten und notiere Dir WLAN-Namen und WLAN-Passwort und
+          bewahre sie an einem sicheren Ort auf. Verlierst du diese Daten, kannst du ggf. nicht mehr
+          auf deine Kr&auml;utertreppe zugreifen!</p>
+          <label for="aname"><b>WiFi-Name:</b></label>
+          <input id="WiFiName" type="text" name="WLAN_Name">
           <br>
           <label for="password"><b>WiFi-Passwort:</b></label>
-          <input id="Wifi-PW" type="password" name="password">
+          <input id="WiFiPW" type="password" name="password">
           <br>
-          <button onclick="connect()" id="connect">Verbinden</button>
+          <button onclick="connectToWiFi();" id="connectWiFi">Verbinden</button>
         </div>
 
         <div class="col">
@@ -33,30 +126,8 @@
           <label for="pas"><b>Bitte stellen Sie das WLAN Passwort f&uuml;r die Kr&auml;utertreppe ein:</b></label>
           <input id="Arduino_PW" type="password" name="pas">
           <br>
-          <button onclick="ArduinoWebServerLogInData()" id="connect">WLAN Einrichten</button>
+          <button onclick="ArduinoWebServerLogInData();" id="connectArduino">WLAN Einrichten</button>
         </div>
       </form>
-
-      <script>
-        var WiFi_Name;
-        var WiFi_PW;
-
-        function connect(){
-          WiFi_Name = getElementById("WiFi_Name").value;
-          WiFi_PW = getElementById("WiFi_PW").value;
-        }
-
-          var Arduino_WiFi_Name;
-          var Arduino_WiFi_PW;
-
-          function ArduinoWebServerLogInData(){
-            Arduino_WiFi_Name = document.getElementById("Arduino_Name").value;
-            Arduino_WiFi_PW = document.getElementById("Arduino_PW").value;
-            //alert(Arduino_WiFi_Name);
-            //alert(Arduino_WiFi_PW);
-
-          }
-      </script>
-
-
+    </body>
 </html>
