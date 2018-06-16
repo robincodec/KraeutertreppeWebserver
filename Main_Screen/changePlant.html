@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>&Auml;ndere Topf</title>
+    <link rel="stylesheet" type="text/css" href="C:\Coden\KraeutertreppeWebserver\CSS\main.css" media="screen">
     <script>
     // number of pot that shall be changed
     var selectedPot = -999;
@@ -171,11 +172,13 @@
   </head>
   <body onload="insertData();">
     <h3 id="changeHeading"></h3>
-    <form name="changeData" action="http://localhost:3000" method="GET" onsubmit="change();">
-      Pflanzenname : <input name="plantName" type="String" size="20">
-      Soll-Feuchte [%] : <input name="moistureToBe" type="number" min="0" max="100">
-      <input type="submit" value="&Auml;ndern">
-      <button onclick="abort();">Abbrechen</button>
-     </form>
+    <div class="container">
+      <form name="changeData" action="http://localhost:3000" method="GET" onsubmit="change();">
+        Pflanzenname : <input name="plantName" type="String" size="20">
+        Soll-Feuchte [%] : <input name="moistureToBe" type="number" min="0" max="100">
+        <input type="submit" value="&Auml;ndern">
+        <button onclick="abort();">Abbrechen</button>
+       </form>
+     </div>
   </body>
 </html>
