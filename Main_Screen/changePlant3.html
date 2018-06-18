@@ -106,7 +106,7 @@
     </style>
     <script>
     // number of pot that shall be changed
-    var selectedPot = -999;
+    var selectedPot = 3;
 
     // current pot data
     var Name_1 = "Unbepflanzt";
@@ -130,8 +130,6 @@
     function insertData () {
       // get data from microcontroller via http get request from xml file loaded on webserver
       httpGetAsyncControllerData("http://localhost:3000/data.xml");
-      //Get the pot that shall be changed from the URL parameters
-      selectedPot = location.search.split("potNumber=")[1];
       // copy data from current pot data variables to updated data variables
       if (selectedPot == 1) {
         plantName = Name_1;

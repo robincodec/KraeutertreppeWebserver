@@ -428,18 +428,6 @@
       xmlHttp.send(xmlDoc);
     }
 
-
-    // potNumber describes which pot has called function
-    var potNumber;
-    // change data for plant watering by user input
-    function changePlant (caller) {
-      // get pot number from calling button
-      var potNumber = caller.id.substring(caller.id.length -1, caller.id.length);
-      // open website for changing data changePlant
-      document.location.href = `http://localhost:3000/changePlant?potNumber=${potNumber}`;
-    }
-
-
     /*
 * chart beginn
 * */
@@ -585,7 +573,6 @@ function showBar(){
     <h1>Meine Kr&auml;utertreppe</h1>
     <!-- Topf 1 -->
     <div class="containter">
-      <form class="row">
         <div class="vlmain1"></div>
         <div class="vlmain2"></div>
         <!--Topf 1 -->
@@ -604,7 +591,7 @@ function showBar(){
             <canvas id="feuchte_verlauf_chart_1" width="100" height="100" style="border: 1px solid #c3c3c3"></canvas>
             <!--chart end-->
             </td></tr>
-            <tr><td><button id="changePot1" onclick="changePlant(this);">&Auml;ndern</button></td>
+            <tr><td><button id="changePot1" onclick="document.location.href = 'http://localhost:3000/changeplantone';">&Auml;ndern</button></td>
             <td><button id="deletePot1" onclick="deleteFunction(this);">L&ouml;schen</button></td></tr>
           </table>
         </div>
@@ -625,7 +612,7 @@ function showBar(){
             <canvas id="feuchte_verlauf_chart_2" width="100" height="100" style="border: 1px solid #c3c3c3"></canvas>
             <!--chart end-->
             </td></tr>
-            <tr><td><button id="changePot2" onclick="changePlant(this);">&Auml;ndern</button></td>
+            <tr><td><button id="changePot2" onclick="document.location.href = 'http://localhost:3000/changeplanttwo';">&Auml;ndern</button></td>
             <td><button id="deletePot2" onclick="deleteFunction(this);">L&ouml;schen</button></td></tr>
           </table>
         </div>
@@ -646,11 +633,10 @@ function showBar(){
             <canvas id="feuchte_verlauf_chart_3"  width="100" height="100" style="border: 1px solid #c3c3c3"></canvas>
             <!--chart end-->
             </td></tr>
-            <tr><td><button id="changePot3" onclick="changePlant(this);">&Auml;ndern</button></td>
+            <tr><td><button id="changePot3" onclick="document.location.href = 'http://localhost:3000/changeplantthree';">&Auml;ndern</button></td>
             <td><button id="deletePot3" onclick="deleteFunction(this);">L&ouml;schen</button></td>
           </table>
         </div>
-      </form>
     </div>
     <br/><br/>
     <button onclick="document.location.href = 'http://localhost:3000/login';">Login-Einstellungen &auml;ndern</button>

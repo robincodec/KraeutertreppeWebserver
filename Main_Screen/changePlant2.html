@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>&Auml;ndere Topf</title>
+    <style media="screen">
+      body{font-family: Arial, Helvetica, sans-serif;}
+
+      *{
+        box-sizing: border-box;
+      }
+
+      .container{
+        position: relative;
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        padding: 20px 0 30px 0;
+      }
+      input,
+      .btn {
+        width: 100%;
+        padding: 14px;
+        border: none;
+        border-radius: 4px;
+        margin: 5px 0;
+        opacity: 0.85;
+        display: inline-block;
+        font-size: 17px;
+        line-height: 20px;
+        text-decoration: none;
+        /* remove underline from anchors */
+      }
+      h1{
+        background-color: #4CAF50;
+        border-radius: 5px;
+        color: white;
+        padding: 20px;
+        text-align:center;
+      }
+      /*Button*/
+      input[type="button"],
+      input[type="submit"],
+      button,
+      .button {
+        background-color: #4CAF50;
+        color: white;
+        border-radius: 5px;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        cursor: pointer;
+        width: 200px
+      }
+      button:hover{
+        opacity: 0.8;
+      }
+
+      .col{
+        float: left;
+        width: 50%;
+        margin: auto;
+        padding: 0 50px;
+        margin-top: 6px;
+      }
+
+
+      .row:after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+
+      .vl {
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%);
+        border: 2px solid #ddd;
+        height: 270px;
+      }
+
+      .vl-innertext {
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #f1f1f1;
+        border: 1px solid #ccc;
+        border-radius: 50%;
+        padding: 8px 10px;
+      }
+
+      @media screen and (max-width: 800px) {
+          .col {
+            width: 100%;
+            margin-top: 0;
+          }
+          /* hide the vertical line */
+          .vl {
+            display: none;
+          }
+          /* show the hidden text on small screens */
+          .hide-md-lg {
+            display: block;
+            text-align: center;
+          }
+      }
+
+    </style>
+    <script>
+    // number of pot that shall be changed
+    var selectedPot = 2;
+
+    // current pot data
+    var Name_1 = "Unbepflanzt";
+    var Feuchte_Soll_1 = 0;
+    var P_Vorhanden_1 = false;
+
+    var Name_2 = "Unbepflanzt";
+    var Feuchte_Soll_2 = 0;
+    var P_Vorhanden_2 = false;
+
+    var Name_3 = "Unbepflanzt";
+    var Feuchte_Soll_3 = 0;
+    var P_Vorhanden_3 = false;
+
+    // updated data
+    var plantName = "";
+    var targetMoisture = 0;
+    var plantExist = false;
+
+    // called on-load of website
+    function insertData () {
+      // get data from microcontroller via http get request from xml file loaded on webserver
+      httpGetAsyncControllerData("http://localhost:3000/data.xml");
+      // copy data from current pot data variables to updated data variables
+      if (selectedPot == 1) {
+        plantName = Name_1;
+        targetMoisture = Feuchte_Soll_1;
+        plantExist = P_Vorhanden_1;
+      }
+      else if (selectedPot == 2) {
+        plantName = Name_2;
+        targetMoisture = Feuchte_Soll_2;
+        plantExist = P_Vorhanden_2;
+      }
+      else if (selectedPot == 3) {
+        plantName = Name_3;
+        targetMoisture = Feuchte_Soll_3;
+        plantExist = P_Vorhanden_3;
+      }
+      //Update data
+      //Update Heading
+      document.getElementById("changeHeading").innerHTML = "&Auml;ndere Topf " + selectedPot;
+      //Update Form
+      document.changeData.plantName.value =  plantName;
+      document.changeData.moistureToBe.value = targetMoisture;
+    }
+
+    // Get data from mikrocontroller's XML file data.xml
+    function httpGetAsyncControllerData(theUrl) {
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.open("GET", theUrl, false); // false for synchronous! wait until data is loaded before continuing
+      xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+          var status = xmlHttp.status;
+          if ((status>= 200 && status <300) || status === 304) {
+            // load requested XML file
+            var xmlUplDoc = xmlHttp.responseXML;
+
+            // Pot 1
+            var NameNodeList = xmlUplDoc.getElementsByTagName("Name_1");
+            Name_1 = NameNodeList[0].childNodes[0].nodeValue;
+            var FeuchteSollNodeList = xmlUplDoc.getElementsByTagName("Feuchte_Soll_1");
+            Feuchte_Soll_1 = FeuchteSollNodeList[0].childNodes[0].nodeValue;
+            var PVorhandenNodeList = xmlUplDoc.getElementsByTagName("P_Vorhanden_1");
+            P_Vorhanden_1 = PVorhandenNodeList[0].childNodes[0].nodeValue;
+
+            // Pot 2
+            var NameNodeList = xmlUplDoc.getElementsByTagName("Name_2");
+            Name_2 = NameNodeList[0].childNodes[0].nodeValue;
+            var FeuchteSollNodeList = xmlUplDoc.getElementsByTagName("Feuchte_Soll_2");
+            Feuchte_Soll_2 = FeuchteSollNodeList[0].childNodes[0].nodeValue;
+            var PVorhandenNodeList = xmlUplDoc.getElementsByTagName("P_Vorhanden_2");
+            P_Vorhanden_2 = PVorhandenNodeList[0].childNodes[0].nodeValue;
+
+            // Pot 3
+            var NameNodeList = xmlUplDoc.getElementsByTagName("Name_3");
+            Name_3 = NameNodeList[0].childNodes[0].nodeValue;
+            var FeuchteSollNodeList = xmlUplDoc.getElementsByTagName("Feuchte_Soll_3");
+            Feuchte_Soll_3 = FeuchteSollNodeList[0].childNodes[0].nodeValue;
+            var PVorhandenNodeList = xmlUplDoc.getElementsByTagName("P_Vorhanden_3");
+            P_Vorhanden_3 = PVorhandenNodeList[0].childNodes[0].nodeValue;
+          }
+          else {
+            alert("Error: Daten der Kr" + unescape("%E4") + "utertreppe konnten von " + theUrl + " nicht geladen werden.");
+          }
+        }
+      }
+      xmlHttp.send();
+    }
+
+    // Form: Change data
+    function change () {
+      // get user input and save to pot array
+      plantName = document.changeData.plantName.value;
+      targetMoisture = document.changeData.moistureToBe.value;
+      plantExist = true;
+      // copy data from updated data variables to current pot data variables
+      if (selectedPot == 1) {
+        Name_1 = plantName;
+        Feuchte_Soll_1 = targetMoisture;
+        P_Vorhanden_1 = plantExist;
+      }
+      else if (selectedPot == 2) {
+        Name_2 = plantName;
+        Feuchte_Soll_2 = targetMoisture;
+        P_Vorhanden_2 = plantExist;
+      }
+      else if (selectedPot == 3) {
+        Name_3 = plantName;
+        Feuchte_Soll_3 = targetMoisture;
+        P_Vorhanden_3 = plantExist;
+      }
+      // post data to webserver / microcontroller
+      httpPostAsyncControllerData("http://localhost:3000/update");
+      // return true to open main website index
+      return true;
+    }
+
+    // send dato to webser via http post request
+    function httpPostAsyncControllerData(theUrl) {
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.open("POST", theUrl, true); // true for asynchronous
+      console.log("State:", xmlHttp.readyState);
+      xmlHttp.onreadystatechange = function() {
+        console.log("State changed - ", "State:", xmlHttp.readyState);
+        if (xmlHttp.readyState === 4) {
+          var status = xmlHttp.status;
+          if ((status>= 200 && status <300) || status === 304) {
+            console.log("Send data to " + theUrl);
+          }
+          else {
+            alert("Failed to send data to " + theUrl);
+          }
+        }
+      }
+      // Convert data to XML to send it to microcontroller
+      // Data to be sent
+      var data = `<?xml version="1.0" encoding="UTF-8"?>
+                    <data>
+                      <Name_1>${Name_1}</Name_1>
+                      <Feuchte_Soll_1>${Feuchte_Soll_1}</Feuchte_Soll_1>
+                      <P_Vorhanden_1>${P_Vorhanden_1}</P_Vorhanden_1>
+                      <Name_2>${Name_2}</Name_2>
+                      <Feuchte_Soll_2>${Feuchte_Soll_2}</Feuchte_Soll_2>
+                      <P_Vorhanden_2>${P_Vorhanden_2}</P_Vorhanden_2>
+                      <Name_3>${Name_3}</Name_3>
+                      <Feuchte_Soll_3>${Feuchte_Soll_3}</Feuchte_Soll_3>
+                      <P_Vorhanden_3>${P_Vorhanden_3}</P_Vorhanden_3>
+                    </data>`;
+      var parser = new DOMParser();
+      var xmlDoc = parser.parseFromString(data, "text/xml");
+      // send XML file via http post request
+      xmlHttp.send(xmlDoc);
+    }
+
+    // Form: Abort change of data
+    function abort () {
+      // open website Main_Screen/index.html
+      document.location.href = 'http://localhost:3000';
+    }
+    </script>
+  </head>
+  <body onload="insertData();">
+    <h3 id="changeHeading"></h3>
+    <div class="container">
+      <form name="changeData" action="http://localhost:3000" method="GET" onsubmit="change();">
+        Pflanzenname : <input name="plantName" type="String" size="20">
+        Soll-Feuchte [%] : <input name="moistureToBe" type="number" min="0" max="100">
+        <input type="submit" value="&Auml;ndern">
+        <button onclick="abort();">Abbrechen</button>
+       </form>
+     </div>
+  </body>
+</html>
