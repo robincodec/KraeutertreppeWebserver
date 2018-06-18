@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Meine Kr&auml;utertreppe</title>
+    <link rel="stylesheet" type="text/css" href="C:\Coden\KraeutertreppeWebserver\CSS\mainscreen.css" media="screen">
     <script>
     // variables that are read in from microcontroller's XML file data.xml
     var TankLeer = false;
@@ -463,64 +464,74 @@ function showBar(){
   <body onload="loadIndex();">
     <h1>Meine Kr&auml;utertreppe</h1>
     <!-- Topf 1 -->
-    <div class="colmain"><table id="table1">
-      <tr><td><h3>Topf 1</h3></td><td></td></tr>
-      <tr><td id="plant1">Keine Pflanze</td><td></td></tr>
-      <tr><td>Ist-Feuchte [%]</td><td id="istFeuchte1">0</td></tr>
-      <tr><td>Soll-Feuchte [%]</td><td id="sollFeuchte1">0</td></tr>
-      <tr><td colspan="2"><h3>Feuchte-Verlauf</h3></td></tr>
-      <tr><td colspan="2">
-        <!--chart beginn-->
-        <!-- Feucht_IST -->
-        <canvas id="myCanvas1" width="100" height="100"
-                style="border:1px solid #c3c3c3;"></canvas>
-        <canvas id="feuchte_verlauf_chart_1" width="100" height="100" style="border: 1px solid #c3c3c3"></canvas>
-        <!--chart end-->
-      </td></tr>
-      <tr><td><button id="changePot1" onclick="changePlant(this);">&Auml;ndern</button></td>
-        <td><button id="deletePot1" onclick="deleteFunction(this);">L&ouml;schen</button></td></tr>
-    </table></div>
-    <br/><br/>
+    <div class="containter">
+      <form class="row">
+        <div class="vlmain1"></div>
+        <div class="vlmain2"></div>
+        <!--Topf 1 -->
+        <div class="colmain">
+          <table id="table1">
+            <tr><td><h3>Topf 1</h3></td><td></td></tr>
+            <tr><td id="plant1">Keine Pflanze</td><td></td></tr>
+            <tr><td>Ist-Feuchte [%]</td><td id="istFeuchte1">0</td></tr>
+            <tr><td>Soll-Feuchte [%]></td><td id="sollFeuchte1">0</td></tr>
+            <tr><td colspan="2"><h3>Feuchte-Verlauf</h3><p id="feuchteHistorie1"></p></td></tr>
+            <tr><td colspan="2">
+            <!--chart beginn-->
+            <!-- Feucht_IST -->
+            <canvas id="myCanvas1" width="100" height="100"
+                  style="border:1px solid #c3c3c3;"></canvas>
+            <canvas id="feuchte_verlauf_chart_1" width="100" height="100" style="border: 1px solid #c3c3c3"></canvas>
+            <!--chart end-->
+            </td></tr>
+            <tr><td><button id="changePot1" onclick="changePlant(this);">&Auml;ndern</button></td>
+            <td><button id="deletePot1" onclick="deleteFunction(this);">L&ouml;schen</button></td></tr>
+          </table>
+        </div>
 
-    <!-- Topf 2 -->
-    <div class="colmain"><table id="table2">
-      <tr><td><h3>Topf 2</h3></td><td></td></tr>
-      <tr><td id="plant2">Keine Pflanze</td><td></td></tr>
-      <tr><td>Ist-Feuchte [%]</td><td id="istFeuchte2">1</td></tr>
-      <tr><td>Soll-Feuchte [%]</td><td id="sollFeuchte2">0</td></tr>
-      <tr><td colspan="2"><h3>Feuchte-Verlauf</h3></td></tr>
-      <tr><td colspan="2">
-        <!--chart beginn-->
-        <!-- Feucht_IST -->
-        <canvas id="myCanvas2" width="100" height="100"
-                style="border:1px solid #c3c3c3;"></canvas>
-        <canvas id="feuchte_verlauf_chart_2" width="100" height="100" style="border: 1px solid #c3c3c3"></canvas>
-        <!--chart end-->
-      </td></tr>
-      <tr><td><button id="changePot2" onclick="changePlant(this);">&Auml;ndern</button></td>
-        <td><button id="deletePot2" onclick="deleteFunction(this);">L&ouml;schen</button></td></tr>
-    </table></div>
-    <br/><br/>
+        <!-- Topf 2 -->
+        <div class="colmain">
+          <table id="table2">
+            <tr><td><h3>Topf 2</h3></td><td></td></tr>
+            <tr><td id="plant2">Keine Pflanze</td><td></td></tr>
+            <tr><td>Ist-Feuchte [%]</td><td id="istFeuchte2">1</td></tr>
+            <tr><td>Soll-Feuchte [%]</td><td id="sollFeuchte2">0</td></tr>
+            <tr><td colspan="2"><h3>Feuchte-Verlauf</h3><p id="feuchteHistorie2"></p></td></tr>
+            <tr><td colspan="2">
+            <!--chart beginn-->
+            <!-- Feucht_IST -->
+            <canvas id="myCanvas2" width="100" height="100"
+                    style="border:1px solid #c3c3c3;"></canvas>
+            <canvas id="feuchte_verlauf_chart_2" width="100" height="100" style="border: 1px solid #c3c3c3"></canvas>
+            <!--chart end-->
+            </td></tr>
+            <tr><td><button id="changePot2" onclick="changePlant(this);">&Auml;ndern</button></td>
+            <td><button id="deletePot2" onclick="deleteFunction(this);">L&ouml;schen</button></td></tr>
+          </table>
+        </div>
 
-    <!-- Topf 3 -->
-    <div class="colmain"><table id="table3">
-      <tr><td><h3>Topf 3</h3></td><td></td></tr>
-      <tr><td id="plant3">Keine Pflanze</td><td></td></tr>
-      <tr><td>Ist-Feuchte [%]</td><td id="istFeuchte3">2</td></tr>
-      <tr><td>Soll-Feuchte [%]</td><td id="sollFeuchte3">0</td></tr>
-      <tr><td colspan="2"><h3>Feuchte-Verlauf</h3></td></tr>
-      <tr><td colspan="2">
-        <!--chart beginn-->
-        <!-- Feucht_IST -->
-        <canvas id="myCanvas3"  width="100" height="100"
-                style="border:1px solid #c3c3c3;"></canvas>
-        <canvas id="feuchte_verlauf_chart_3"  width="100" height="100" style="border: 1px solid #c3c3c3"></canvas>
-        <!--chart end-->
-      </td></tr>
-      <tr><td><button id="changePot3" onclick="changePlant(this);">&Auml;ndern</button></td>
-        <td><button id="deletePot3" onclick="deleteFunction(this);">L&ouml;schen</button></td>
-      </tr>
-    </table></div>
+        <!-- Topf 3 -->
+        <div class="colmain">
+          <table id="table3">
+            <tr><td><h3>Topf 3</h3></td><td></td></tr>
+            <tr><td id="plant3">Keine Pflanze</td><td></td></tr>
+            <tr><td>Ist-Feuchte [%]</td><td id="istFeuchte3">2</td></tr>
+            <tr><td>Soll-Feuchte [%]</td><td id="sollFeuchte3">0</td></tr>
+            <tr><td colspan="2"><h3>Feuchte-Verlauf</h3><p id="feuchteHistorie3"></p></td></tr>
+            <tr><td colspan="2">
+            <!--chart beginn-->
+            <!-- Feucht_IST -->
+            <canvas id="myCanvas3"  width="100" height="100"
+                    style="border:1px solid #c3c3c3;"></canvas>
+            <canvas id="feuchte_verlauf_chart_3"  width="100" height="100" style="border: 1px solid #c3c3c3"></canvas>
+            <!--chart end-->
+            </td></tr>
+            <tr><td><button id="changePot3" onclick="changePlant(this);">&Auml;ndern</button></td>
+            <td><button id="deletePot3" onclick="deleteFunction(this);">L&ouml;schen</button></td>
+          </table>
+        </div>
+      </form>
+    </div>
     <br/><br/>
     <button onclick="document.location.href = 'http://localhost:3000/login';">Login-Einstellungen &auml;ndern</button>
   </body>
