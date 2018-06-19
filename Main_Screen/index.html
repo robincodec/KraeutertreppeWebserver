@@ -181,6 +181,11 @@
 
     // Load data from microcontroller. Called on-load of Main_Screen/index.html
     function loadIndex (){
+        /*begin call graphic function*/
+        drawchart();
+        showBar();
+        /*end call graphic function*/
+        
       // get data from microcontroller via http get request from xml file loaded on webserver
       httpGetAsyncControllerData("http://localhost:3000/data.xml");
       // if tank is almost empty inform user
@@ -429,7 +434,7 @@
     }
 
     /*
-* chart beginn
+* chart begin
 * */
 function drawchart() {
     var canvas = document.getElementById("feuchte_verlauf_chart_1");//find the canvas element
@@ -494,7 +499,7 @@ function drawchart() {
 
 
 /*
-* chart beginn
+* barchart begin
 * */
 
 function showBar(){
@@ -541,31 +546,9 @@ function showBar(){
     }
 }
 showBar();
-/*
-* chart end
-* */
-
-/*
-* chart beginn
-* */
-/*
-function showBar(){
-    var c = document.getElementById("myCanvas");
-    var ctx = c.getContext("2d");
-    ctx.fillStyle = "#c3c3c3";
-    var values= [66, 77, 68, 20, 75, 85, 70, 80, 50, 65, 59, 75, 10, 69,66];
-    var distance = 10;
-    var maxheight = 80;
-    var barwidth= 100 /values.length - distance;
-    for(var i = 0; i < values.length; i++)
-    {
-        ctx.fillRect(barwidth * i + distance * i, maxheight - maxheight * values[i] / 100, barwidth, maxheight * values[i] / 100);
-    }
-}
-*/
-/*
-* chart end
-* */
+    /*
+    * barchart end
+    * */
 
     </script>
   </head>
@@ -584,7 +567,7 @@ function showBar(){
             <tr><td>Soll-Feuchte [%]></td><td id="sollFeuchte1">0</td></tr>
             <tr><td colspan="2"><h3>Feuchte-Verlauf</h3><p id="feuchteHistorie1"></p></td></tr>
             <tr><td colspan="2">
-            <!--chart beginn-->
+            <!--chart begin-->
             <!-- Feucht_IST -->
             <canvas id="myCanvas1" width="100" height="100"
                   style="border:1px solid #c3c3c3;"></canvas>
@@ -605,7 +588,7 @@ function showBar(){
             <tr><td>Soll-Feuchte [%]</td><td id="sollFeuchte2">0</td></tr>
             <tr><td colspan="2"><h3>Feuchte-Verlauf</h3><p id="feuchteHistorie2"></p></td></tr>
             <tr><td colspan="2">
-            <!--chart beginn-->
+            <!--chart begin-->
             <!-- Feucht_IST -->
             <canvas id="myCanvas2" width="100" height="100"
                     style="border:1px solid #c3c3c3;"></canvas>
@@ -626,7 +609,7 @@ function showBar(){
             <tr><td>Soll-Feuchte [%]</td><td id="sollFeuchte3">0</td></tr>
             <tr><td colspan="2"><h3>Feuchte-Verlauf</h3><p id="feuchteHistorie3"></p></td></tr>
             <tr><td colspan="2">
-            <!--chart beginn-->
+            <!--chart begin-->
             <!-- Feucht_IST -->
             <canvas id="myCanvas3"  width="100" height="100"
                     style="border:1px solid #c3c3c3;"></canvas>
